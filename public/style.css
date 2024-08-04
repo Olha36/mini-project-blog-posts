@@ -168,7 +168,52 @@ body {
 .create-comment-form .add-comment:hover {
   background-color: #0056b3;
 }
+#pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+  text-align: center; 
+}
 
+#pagination-controls button, #pagination-controls span {
+  margin: 0 0.5rem; 
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#pagination-controls button {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+#pagination-controls button:hover {
+  background-color: #0056b3;
+}
+
+#pagination-controls span {
+  background-color: #ffffff;
+  color: black;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+#pagination-controls button[disabled] {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+#pagination-controls button[disabled]:hover {
+  background-color: #ccc;
+}
 @media (max-width: 600px) {
   #create-post-form {
     padding: 15px;
@@ -200,5 +245,52 @@ body {
   .post button {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
+  }
+
+  #pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+    text-align: center; 
+  }
+  
+  #pagination-controls button, #pagination-controls span {
+    margin: 0 0.5rem; 
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  #pagination-controls button {
+    background-color: #007bff;
+    color: #ffffff;
+  }
+  
+  #pagination-controls button:hover {
+    background-color: #0056b3;
+  }
+  
+  #pagination-controls span {
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  #pagination-controls button[disabled] {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+  }
+  
+  #pagination-controls button[disabled]:hover {
+    background-color: #ccc;
   }
 }

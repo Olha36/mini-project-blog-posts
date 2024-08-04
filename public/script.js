@@ -1,5 +1,7 @@
 let postsData = [];
 let template;
+let currentPage = 1;
+const postsPerPage = 3;
 
 document.addEventListener('DOMContentLoaded', async function () {
   // Отримання списку постів
@@ -16,12 +18,47 @@ document.addEventListener('DOMContentLoaded', async function () {
 
       const source = document.querySelector('#menu-template').innerHTML;
       template = Handlebars.compile(source);
-      document.querySelector('#menu-container').innerHTML = template({ posts: postsData });
+      pagination();
     } catch (error) {
       console.error('Error fetching or processing data', error);
     }
   }
   document.getElementById('create-post-form').addEventListener('submit', createPost);
+  document.getElementById('prev-page').addEventListener('click', showPreviousPage);
+  document.getElementById('next-page').addEventListener('click', showNextPage);
+
+  function pagination() {
+    const start = (currentPage - 1) * postsPerPage;
+    const end = start + postsPerPage;
+    const paginatedPosts = postsData.slice(start, end);
+
+    const paginatedData = { posts: paginatedPosts, comments: [], profile: {} };
+    document.querySelector('#menu-container').innerHTML = template(paginatedData);
+
+    setUpdateListeners();
+    updatePageInfo();
+  }
+
+  function updatePageInfo() {
+    const pageInfo = document.getElementById('page-info');
+    const totalPages = Math.ceil(postsData.length / postsPerPage);
+    pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+  }
+
+  function showPreviousPage() {
+    if (currentPage > 1) {
+      currentPage--;
+      pagination();
+    }
+  }
+
+  function showNextPage() {
+    const totalPages = Math.ceil(postsData.length / postsPerPage);
+    if (currentPage < totalPages) {
+      currentPage++;
+      pagination();
+    }
+  }
 
   // Створення нового поста
   async function createPost(title, content) {
@@ -58,18 +95,70 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
       const updatedData = await updatedResponse.json();
       postsData = updatedData.posts;
+      currentPage = 1; // Reset to first page after adding a new post
+      pagination();
     } catch (error) {
       console.log('Error adding post to database', error);
     }
   }
 
-  // Оновлення поста
-  //   async function updatePost(id, title, content) {
-  //     try {
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
+  function setUpdateListeners() {
+    const menuItemLiElements = document.querySelectorAll('.edit-post-button');
+
+    menuItemLiElements.forEach((item) => {
+      item.addEventListener('click', updatePost);
+    });
+  }
+
+    async function updatePost(id, title, content) {
+      
+      id = event.target.getAttribute('data-id');
+      if (!id) {
+        console.error('No post ID found');
+        return;
+      }
+      try {
+        const response = await fetch(`/posts/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data from db.json');
+        }
+        const post = await response.json();
+  
+        title = prompt('Enter the new title', post.title);
+        content = prompt('Enter the new content', post.content);
+  
+        const updatedPost = {
+          id: id,
+          title: title,
+          content: content,
+        };
+  
+        const updateResponse = await fetch(`/posts/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedPost),
+        });
+  
+        if (!updateResponse.ok) {
+          const errorText = await updateResponse.text();
+          throw new Error(`Failed to update post: ${errorText}`);
+        }
+  
+        alert('Post updated successfully');
+  
+        const updatedPostsResponse = await fetch('/db.json');
+        if (!updatedPostsResponse.ok) {
+          throw new Error('Failed to fetch updated data');
+        }
+        const updatedData = await updatedPostsResponse.json();
+        postsData = updatedData.posts;
+        pagination();
+      } catch (error) {
+        console.error('Error updating post:', error);
+      }
+    }
 
   // Видалення поста
   //   async function deletePost(id) {
