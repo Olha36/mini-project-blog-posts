@@ -109,28 +109,64 @@ app.put('/posts/:id', (req, res) => {
   });
 });
 
-
 app.delete('/posts/:id', (req, res) => {
-    fs.readFile(path.join(__dirname, 'public', 'db.json'), 'utf8', (err, data) => {
+  fs.readFile(path.join(__dirname, 'public', 'db.json'), 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      res.status(500).send('Error reading file');
+      return;
+    }
+    const db = JSON.parse(data);
+    db.posts = db.posts.filter((post) => post.id != req.params.id);
+    fs.writeFile(path.join(__dirname, 'public', 'db.json'), JSON.stringify(db, null, 2), (err) => {
       if (err) {
-        console.error('Error reading file:', err);
-        res.status(500).send('Error reading file');
+        console.error('Error writing file:', err);
+        res.status(500).send('Error writing file');
         return;
       }
-      const db = JSON.parse(data);
-      db.posts = db.posts.filter(post => post.id != req.params.id);
-      fs.writeFile(path.join(__dirname, 'public', 'db.json'), JSON.stringify(db, null, 2), (err) => {
-        if (err) {
-          console.error('Error writing file:', err);
-          res.status(500).send('Error writing file');
-          return;
-        }
-        res.status(200).send('Post deleted');
-      });
+      res.status(200).send('Post deleted');
     });
   });
+});
 
-  
+app.post('/posts/:id/comments', (req, res) => {
+  const postId = req.params.id;
+  const newComment = req.body.content;
+
+  fs.readFile(path.join(__dirname, 'public', 'db.json'), 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading database file:', err);
+      res.status(500).send('Error reading database file');
+      return;
+    }
+
+    const db = JSON.parse(data);
+    const post = db.posts.find((p) => p.id === postId);
+
+    if (!post) {
+      res.status(404).send({ error: 'Post not found' });
+      return;
+    }
+
+    post.comments.push(newComment);
+
+    fs.writeFile(
+      path.join(__dirname, 'public', 'db.json'),
+      JSON.stringify(db, null, 2),
+      'utf8',
+      (err) => {
+        if (err) {
+          console.error('Error writing to database file:', err);
+          res.status(500).send('Error writing to database file');
+          return;
+        }
+
+        res.status(200).send('Comment added successfully');
+      }
+    );
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
