@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   //   // Додавання коментаря до поста
-  async function createComment(postId) {
+  async function createComment(event,postId) {
     event.preventDefault(); // Prevent form submission
 
     // Get the comment input field for the specific post
