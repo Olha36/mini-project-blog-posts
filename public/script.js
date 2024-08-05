@@ -4,7 +4,7 @@ let currentPage = 1;
 const postsPerPage = 3;
 
 document.addEventListener('DOMContentLoaded', async function () {
-  // Отримання списку постів
+
   async function getPosts() {
     try {
       const response = await fetch('/db.json');
@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     setUpdateListeners();
     updatePageInfo();
+    setDeleteButtonListeners();
   }
 
   function updatePageInfo() {
@@ -60,7 +61,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   }
 
-  // Створення нового поста
   async function createPost(title, content) {
     title = document.getElementById('title-input').value;
     content = document.getElementById('content-input').value;
@@ -160,13 +160,43 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     }
 
-  // Видалення поста
-  //   async function deletePost(id) {
-  //     try {
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
+
+    function setDeleteButtonListeners() {
+      const deletePostButtons = document.querySelectorAll('.delete-post-buton');
+  
+      deletePostButtons.forEach((button) => {
+        button.addEventListener('click', deletePost);
+      });
+    }
+
+    async function deletePost(id) {
+      id = event.target.getAttribute('data-id');
+    try {
+      const deleteResponse = await fetch(`/posts/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!deleteResponse.ok) {
+        const errorText = await deleteResponse.text();
+        throw new Error(`Failed to delete post: ${errorText}`);
+      }
+
+      alert('Post deleted successfully');
+
+      const updatedResponse = await fetch('/db.json');
+      if (!updatedResponse.ok) {
+        throw new Error('Failed to fetch deleted data');
+      }
+      const updatedData = await updatedResponse.json();
+      postsData = updatedData.posts;
+      pagination();
+      } catch (error) {
+        console.error('Error deleting post:', error);
+      }
+    }
 
   //   // Додавання коментаря до поста
   //   async function createComment(postId, comment) {
