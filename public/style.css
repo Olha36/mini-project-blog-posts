@@ -214,6 +214,74 @@ body {
 #pagination-controls button[disabled]:hover {
   background-color: #ccc;
 }
+
+.butterfly {
+  position: fixed;
+  animation: floatup 20s linear infinite, sideways 20s linear infinite, change 10s linear infinite alternate;
+}
+.box {
+  width: 200px;
+  display: flex;
+  perspective: 500px;
+}
+
+.box::before,
+.box::after {
+  content: "";
+  padding-top: 56%;
+  flex: 1;
+  background-image: url("https://clipart-library.com/2023/Purple_Butterfly_PNG_Clipart.png");
+  background-size: 200% 100%;
+  animation: left 0.5s linear infinite alternate;
+  transform-origin: right;
+}
+
+.box::after {
+  background-position: right;
+  animation-name: right;
+  transform-origin: left;
+}
+@keyframes left {
+  from {
+    transform: translateZ(80px) rotateY(-10deg)
+  }
+  to {
+    transform:translateZ(0px) rotateY(50deg) 
+  }
+}
+
+@keyframes right {
+  from { 
+    transform: translateZ(80px) rotateY(10deg)
+  }
+  to {
+    transform:translateZ(0px) rotateY(-50deg) 
+  }
+}
+
+@keyframes flutter {
+  from{ 
+    margin-left: 0;
+    margin-top:100%; 
+    }
+  to{
+    margin-left: 100%;
+    margin-top:0;
+    }
+  }
+
+@keyframes floatup{
+  0% {top: 100%;}
+  100% {top:-300px;}
+}
+@keyframes sideways{
+  to{left: (random(100) * 10px);}
+}
+@keyframes change{
+  from {transform: rotate((random(5) * 5deg));}
+  to {transform: rotate(45deg);}
+}
+
 @media (max-width: 600px) {
   #create-post-form {
     padding: 15px;
