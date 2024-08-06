@@ -1,15 +1,62 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="./style.css">
-   <link rel="stylesheet" href="style.css">
-   <title>Міні проект: блог пости</title>
-</head>
-<body>
-  
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/reset.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Міні проект: блог пости</title>
+  </head>
+  <body>
+    <form id="create-post-form">
+      <input type="text" id="title-input" placeholder="Заголовок" required />
+      <textarea name="" id="content-input" placeholder="Зміст" required></textarea>
+      <button id="create-post-button" type="submit">Створити пост</button>
+    </form>
 
-  <script src="./main.js" type="module"></script>
-</body>
+    <div id="posts-container"></div>
+
+    <div id="post-list">
+      <h2>Пости:</h2>
+      <div id="post-container"></div>
+    </div>
+
+    <div id="menu-container"></div>
+
+    <template id="menu-template">
+      <div class="post">
+        {{#each posts}}
+        <h2>{{this.title}}</h2>
+        <p>{{this.content}}</p>
+        <button class="edit-post-button" data-id="{{this.id}}">Редагувати</button>
+        <button class="delete-post-buton" data-id="{{this.id}}">Видалити</button>
+
+        <div class="comments-container" data-id="{{this.id}}">
+          <h3>Коментарі:</h3>
+          <ul>
+            <li>{{this.comments}}</li>
+          </ul>
+
+          <form action="" class="create-comment-form">
+            <input type="text" class="comment-input" placeholder="Новий коментар" required />
+            <button class="add-comment" data-id="{{this.id}}">Додати коментар</button>
+          </form>
+        </div>
+        {{/each}}
+      </div>
+    </template>
+
+    <div id="pagination-controls">
+      <button id="prev-page">Previous</button>
+      <span id="page-info"></span>
+      <button id="next-page">Next</button>
+    </div>
+
+    <div class="butterfly">
+      <div class="box"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src="./main.js" type="module"></script>
+  </body>
 </html>
