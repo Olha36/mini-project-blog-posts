@@ -2,13 +2,19 @@
   "posts": [
     {
       "id": "2",
-      "title": "Second Post",
-      "content": "This is the content of the second post",
+      "title": "First Post",
+      "content": "This is the updated content of the first post",
       "comments": [
         "Nice article!",
         "Thanks for sharing.",
         "check again"
       ]
+    },
+    {
+      "id": "4112",
+      "title": "The Impact of Social Media on Human Interaction",
+      "views": 0,
+      "content": "In recent years, social media has greatly influenced human interaction and our lifestyle. Let us dive deeper into this issue.\n\nFirst of all, social media has transformed the way people communicate with each other. On the one hand, it has brought people closer together and provided unprecedented opportunities in daily life. On the other hand, technology has led to a decline in meaningful, face-to-face interactions. Additionally, there is noticeable degradation among children as they rely on various AI tools to complete their homework instead of thinking independently.\n\nIn professional settings, social media offers numerous advantages. Workers can communicate with colleagues worldwide, facilitating visual interactions without the associated costs. Furthermore, people can make deals and sign contracts without the need for business trips, which is extremely convenient.\n\nSocial media also plays a significant role in shaping public opinion and social trends. Nowadays, people share their views on various platforms like Instagram and Twitter, creating new trends daily. It is rare to see two young women discussing the latest fashion show on a park bench; instead, it is more common to find an Instagram post on the topic.\n\nRegarding my personal experience and observations, I am not inclined to share my private life publicly or follow others' lives closely. Social media serves as a brilliant way to relax after a hard day’s work by chatting with friends, but it should not become a central focus of life.\n\nIn conclusion, while social media is vital for professional purposes, it should be used in moderation in private life."
     }
   ]
 }
